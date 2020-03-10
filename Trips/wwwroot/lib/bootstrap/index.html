@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="Icon.png" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="three.js"></script>
+    <script src="OBJLoader.js"></script>
+    <script src="models/SceneLoader.js"></script>
+    <script src="PhoneOrientation.js"></script>
+    <title>Real Time Phone</title>
+  </head>
+
+  <body>
+    <div class="flex-column">
+      <div id="renderer"></div>
+      <div id="container">
+        <canvas id="graph" width="300" height="250"> </canvas>
+        <div id="overlay">
+          <div class="blue-line">Acceleration</div>
+          <div class="white-line">Orientation</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
