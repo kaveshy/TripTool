@@ -14,7 +14,7 @@ $(document).ready(function () {
     phoneRenderer = new PhoneRenderer(offsetH);
     phoneRenderer.addLightsToScene();
     phoneRenderer.addFloorToScene();
-    phoneRenderer.addPhoneToScene("../models/", onLoaded);
+    phoneRenderer.addPhoneToScene("~/TripTool/wwwroot/lib/bootstrap/models/", onLoaded);
     $("#trip-details").height(window.innerHeight - offsetH - 60);
     $("#trip-details").show();
     $("#renderer").hide();

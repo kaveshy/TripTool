@@ -61,11 +61,11 @@ var PhoneRenderer = (function () {
     PhoneRenderer.prototype.addPhoneToScene = function (path, onLoaded) {
         var _this = this;
         this.onLoaded = onLoaded;
-        var AbsolutePath = "~/TripTool/wwwroot/models/";
+        var AbsolutePath = "~/TripTool/wwwroot/lib/bootstrap/models/";
         this.modelPath = path;
         var loader = new THREE.OBJLoader();
         //var AbsolutePath = "~/TripTool/wwwroot/models/";
-        //loader.load(AbsolutePath + "phone.obj", function (o) { return _this.onLoadedPhone(o); }, null, null);
+       // loader.load(AbsolutePath + "phone.obj", function (o) { return _this.onLoadedPhone(o); }, null, null);
    
         loader.load(this.modelPath + "phone.obj", function (o) { return _this.onLoadedPhone(o); }, null, null);
     };

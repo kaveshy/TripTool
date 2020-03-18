@@ -83,30 +83,20 @@ namespace Trips.Controllers
             return "error in GetFromProd Function";
         }
 
-        //public async Task<string> GetFromProd(string Route, int TripId)
-        //{
-        //    HttpClient client = new HttpClient();
-        //    client.BaseAddress = new Uri(baseURLProd);
-        //    client.DefaultRequestHeaders.Add("Authorization", apiTokenProd);
 
-        //    HttpResponseMessage response = await client.GetAsync(baseURLProd + Route + TripId);
-        //    try
-        //    {
-        //        if (response.IsSuccessStatusCode)
-        //        {
+        public PhoneData[] TrimTo1Second(PhoneData[] data,PhoneData newData)
+        {
+            if (data.Length> 1 )
+            {
+                for (int k = 0; data.Length > 1 && ((newData.TimeStamp.Subtract(data[0].TimeStamp).Seconds) > (int)(DateTime.Now.Second))
+                {
+                    var slice = data[1..];
 
-        //            var temp = await response.Content.ReadAsAsync<object>();
-        //            return temp.ToString();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e);
-        //        return e.ToString();
-        //    }
-
-        //    return "error in GetFromProd Function";
-        //}
+                    data = data.Slice(1, data.Length);
+                }
+            }
+            return data;
+        }
 
     }
 }

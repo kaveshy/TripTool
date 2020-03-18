@@ -7,7 +7,7 @@ $(document).ready(function () {
     phoneRenderer = new PhoneRenderer(260);
     phoneRenderer.addLightsToScene();
     phoneRenderer.addFloorToScene();
-    phoneRenderer.addPhoneToScene("models/", onLoadedModel);
+    phoneRenderer.addPhoneToScene("modelssss/", onLoadedModel);
     layoutGraphCanvas();
 });
 function onLoadedModel() {
