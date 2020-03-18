@@ -86,17 +86,35 @@ namespace Trips.Controllers
 
         public PhoneData[] TrimTo1Second(PhoneData[] data,PhoneData newData)
         {
+            var slice = new Span<PhoneData>();
             if (data.Length> 1 )
             {
+                
                 for (int k = 0; data.Length > 1 && ((newData.TimeStamp.Subtract(data[0].TimeStamp).Seconds) > (int)(DateTime.Now.Second))
-                {
-                    var slice = data[1..];
+                { 
+                    slice = new Span<PhoneData>(data, 1, data.Length);
+                    data = Slice<PhoneData>(data,1,data.Length);
 
-                    data = data.Slice(1, data.Length);
                 }
             }
             return data;
         }
+        public static T[] Slice<T>(this T[] source, int start, int end)
+        {
+            // Handles negative ends.
+            if (end < 0)
+            {
+                end = source.Length + end;
+            }
+            int len = end - start;
 
+            // Return new array.
+            T[] res = new T[len];
+            for (int i = 0; i < len; i++)
+            {
+                res[i] = source[i + start];
+            }
+            return res;
+        }
     }
 }
