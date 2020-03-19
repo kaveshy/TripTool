@@ -10,6 +10,6 @@ namespace Trips.Models
         public  Vector4 Orientation;
         public  Vector3 Acceleration;
         public  DateTime TimeStamp;
-        public double RotationAmount;
+        public float RotationAmount;
     }
 }

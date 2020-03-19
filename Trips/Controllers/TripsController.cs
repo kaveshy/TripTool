@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Trips.Models;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using System.Numerics;
 
 namespace Trips.Controllers
 {
@@ -115,6 +116,46 @@ namespace Trips.Controllers
                 res[i] = source[i + start];
             }
             return res;
+        }
+
+        public PhoneData[] AppendIfNewer(PhoneData[] data, PhoneData newData)
+        {
+
+            var Last = data[data.Length - 1];
+            var Diff = newData.TimeStamp.Subtract(Last.TimeStamp).Milliseconds;
+            List<PhoneData> dataList = new List<PhoneData>(data);
+            
+
+            if (Diff > DateTime.Now.Millisecond) // what is being compared ?
+            {
+               dataList.Add(newData); // new data or data ?
+            }
+            else {
+                Console.WriteLine("Skipped Out of Order Event");
+            }
+            var dataPhone = dataList.ToArray();
+            return dataPhone;
+        }
+
+
+        public double FindAngle(PhoneData old, PhoneData _new)
+        {
+            System.Numerics.Vector3 v1 = new System.Numerics.Vector3(old.Orientation.X, old.Orientation.Y, old.Orientation.Z);
+            System.Numerics.Vector3 v2 = new System.Numerics.Vector3(_new.Orientation.X, _new.Orientation.Y, _new.Orientation.Z);
+            Quaternion q1 = new Quaternion(v1, old.Orientation.W);
+            Quaternion q2 = new Quaternion(v2, _new.Orientation.W);
+            Quaternion qA = q2 * Quaternion.Inverse(q1);
+            double Radians = Math.Acos(qA.W) * 2; // try with float
+
+            if (double.IsNaN(Radians))
+            {
+                Radians = 0;
+            }
+            if (Radians > Math.PI)
+            {
+                Radians = (Math.PI * 2) - Radians;
+            }
+            return Radians;
         }
     }
 }

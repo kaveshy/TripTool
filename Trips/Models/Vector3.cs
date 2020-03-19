@@ -7,8 +7,9 @@ namespace Trips.Models
 {
     public class Vector3
     {
-        public double X;
-        public double Y;
-        public double Z;
+        public float X;
+        public float Y;
+        public float Z;
+
     }
 }
