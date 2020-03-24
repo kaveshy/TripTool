@@ -25,6 +25,8 @@ namespace Trips.Controllers
         private static string baseURLProd = "https://driveapi.dialdirect.co.za";
         private static string apiTokenProd = "Bearer 7dYmVG-Yv007QssMkTsuSDEv98fWfSB-62sbcfpc77lQNXhIBqvIO1A3-o479-G52ibrv9lD6dzABs7ihUxGilR0nsc0o2DJLaP4K58ujhpCMUBmPzT5bJCtTCExgowBe7aFT7kCzhLWeVsIZgdGn6mcr25r-fid2skrVvSqvhNXVwHaffUT-20oRKBeFhio-wnUuUf2hSoqtW8jdaccrRIzSsFYxHcCWWdpPxleffnTsLloX4gZrsPuZAWysAe7AESWulCAgkv1GOJ3Zd4jqEA5S4C9TOsdfNkWipoJXEfU7Tb9GlXxRvLJwNX53L6oi0QlWo-F_67ICgCsS7lfgk_CcTY1uvlGJvLPSObvDiAXDGuknNn1EHa2OjmAil-2Bop-JT4s8xrorhSIr4XbEHpIN48acGZqEuVc4mWW4GrL-467jjX5Jj3qdExHku1UBA1Q40o4JR_dAWPGxrzIuwggsh8xad4QwmpGIhzYshBtswisoRp72Pn6Ve1gOtDm";
         public PhoneData phoneData;
+        public PhoneData[] phoneDataHistory;
+        List<PhoneData> PhoneHistory;
 
         [Authorize]
         public IActionResult Trips()
@@ -85,18 +87,26 @@ namespace Trips.Controllers
             return "error in GetFromProd Function";
         }
 
+        [HttpPost("set/phonedata")]
+        public void set([FromBody] PhoneData PD)
+        {
+            if (PD is null)
+                Console.WriteLine("Error in receiving PhoneData");
+            else DoCalculationsForNewData();
+        }
 
+        [HttpPost("get/phonedata")]
+        public string get()
+        {
+            return JsonConvert.SerializeObject(phoneData);
+        }
         public PhoneData[] TrimTo1Second(PhoneData[] data,PhoneData newData)
         {
-            var slice = new Span<PhoneData>();
-            if (data.Length> 1 )
+            if (data.Length > 1)
             {
-                
-                for (int k = 0; data.Length > 1 && ((newData.TimeStamp.Subtract(data[0].TimeStamp).Seconds) > (int)(DateTime.Now.Second));)
-                { 
-                    slice = new Span<PhoneData>(data, 1, data.Length);
-                    data = Slice<PhoneData>(data,1,data.Length);
-
+                while ((data.Length > 1) && (newData.TimeStamp.Subtract(data[0].TimeStamp).Seconds > (int)DateTime.Now.Second))
+                {
+                    data = Slice<PhoneData>(data, 1, data.Length);
                 }
             }
             return data;
@@ -138,7 +148,7 @@ namespace Trips.Controllers
             return dataPhone;
         }
 
-
+        
         public float FindAngle(PhoneData old, PhoneData _new)
         {
             System.Numerics.Vector3 v1 = new System.Numerics.Vector3(old.Orientation.X, old.Orientation.Y, old.Orientation.Z);
@@ -185,8 +195,10 @@ namespace Trips.Controllers
             return (data, newData);
         }
 
-
-		
+        public void DoCalculationsForNewData()
+        {
+           (phoneDataHistory, phoneData) = UpdateCurrentRotationAmount(phoneDataHistory, phoneData);
+        }
 
     }
 }
