@@ -19,7 +19,6 @@ $(document).ready(function () {
     $("#trip-details").height(window.innerHeight - offsetH - 60);
     $("#trip-details").show();
     $("#renderer").hide();
-    $("#loader").hide();
     tripGraph = new TripGraph($("#graph").get(0));
     setupEventListeners();
     
